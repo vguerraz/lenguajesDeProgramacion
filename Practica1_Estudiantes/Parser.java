@@ -169,7 +169,7 @@ public class Parser{
 		else if (lexer.getCurrentToken().code == Lexer.VARIABLE){
 			recognizeVariable();
 		} //checks for call <variable> <lparen> [argumentList] <rparen>
-		else (lexer.getCurrentToken().code == Lexer.CONSTANT){
+		else if (lexer.getCurrentToken().code == Lexer.CONSTANT){
 			//checks for "constant"
 			recognize(Lexer.CONSTANT);	
 		}
