@@ -124,17 +124,22 @@ public class Parser{
 	**/
 	public void varDef(){
 		recognize(Lexer.INT);
-		a = recognize(Lexer.VARIABLE);
-		if (lexer.getCurrentToken().code == Lexer.ASSIGN)
-			a = asignacion();
+		recognize(Lexer.VARIABLE);
 	}
 	
 	/**
-		Function asignacion: verifies the production <asignacion> ::=<assign><expr> 
+		Function asignacion: verifies the production <asignacion> ::=<variable><assign>(<constant>|<expr>) 
 	**/
 	public void asignacion(){
+		recognize(Lexer.VARIABLE);
 		recognize(Lexer.ASSIGN);
-		expr();
+		//checks for read <constant>
+		if (lexer.getCurrentToken().code == Lexer.CONSTANT){
+			recognize(Lexer.CONSTANT);
+		} //checks for print <expr>
+		else {
+			expr();
+		}
 	}
 	
 	/**
@@ -161,10 +166,10 @@ public class Parser{
 		Function factor: verifies the production <factor> ::= (<expr>) | variable | constant 
 	**/
 	public void factor(){
-		if (lexer.getCurrentToken().code == Lexer.LPARENT){
-			recognize(Lexer.LPARENT);
+		if (lexer.getCurrentToken().code == Lexer.LPAREN){
+			recognize(Lexer.LPAREN);
 			expr();
-			recognize(Lexer.RPARENT);
+			recognize(Lexer.RPAREN);
 		} //checks for print <variable>
 		else if (lexer.getCurrentToken().code == Lexer.VARIABLE){
 			recognizeVariable();
@@ -189,7 +194,7 @@ public class Parser{
 	}
 
 	/**
-		Function statement: verifies the production <statement>::= read <variable> | print <variable> | call<variable><lparen>[<argumentList>]<rparen> | <condicional> | <ciclo>
+		Function statement: verifies the production <statement>::= read <variable> | print <variable> | <asignacion> | call<variable><lparen>[<argumentList>]<rparen> | <condicional> | <ciclo>
 	**/
 	public boolean statement(){
 		boolean r = false;
@@ -205,7 +210,12 @@ public class Parser{
 			recognize(Lexer.VARIABLE);
 			System.out.println("Print ok!");
 			r=true;
-		} //checks for call <variable> <lparen> [argumentList] <rparen>
+		} //checks for <asignacion>
+		else if ((lexer.getCurrentToken().code == Lexer.VARIABLE){
+			asignacion();
+			System.out.println("Asignacion ok!");
+			r=true;
+		}//checks for call <variable> <lparen> [argumentList] <rparen>
 		else if (lexer.getCurrentToken().code == Lexer.CALL){
 			//checks for "call"
 			recognize(Lexer.CALL);
@@ -235,7 +245,7 @@ public class Parser{
 	}
 	
 	/**
-		Function condicional: verifies the production <condicional> ::= if <comparacion> <points> {<statement>} [<elseStatement>] endif
+		Function condicional: verifies the production <condicional> ::= if <comparacion> {<statement>} [<elseStatement>] endif
 	**/
 	public void condicional()
 	{
@@ -243,8 +253,6 @@ public class Parser{
 		recognize(Lexer.IF);
 		//checks for <comparacion>
 		comparacion();
-		//checks for :
-		recognize(Lexer.POINTS);
 		//checks for <statement>
 		statement();
 		//verifies if there are more <statement>
@@ -252,7 +260,7 @@ public class Parser{
 			statement();
 		}
 		//verifies if <elseStatement>
-		if (lexer.getCurrentToken().code = Lexer.ELSE){
+		if (lexer.getCurrentToken().code == Lexer.ELSE){
 			elseStatement();
 		}
 		//checks for endif
@@ -260,10 +268,12 @@ public class Parser{
 	}
 	
 	/**
-		Function comparacion: verifies the production <comparacion> ::= <variable>(<equals>|<diferente>)(<variable>|<constant>)
+		Function comparacion: verifies the production <comparacion> ::= <lparent> <variable> (<equals>|<diferente>) (<variable>|<constant>) <rparent>
 	**/
 	public void comparacion()
 	{
+		//checks for <lparen>
+		recognize(Lexer.LPAREN);
 		//checks for <variable>
 		recognize(Lexer.VARIABLE);
 		//checks for <equals>
@@ -280,6 +290,8 @@ public class Parser{
 		else if (lexer.getCurrentToken().code == Lexer.CONSTANT){
 			recognize(Lexer.CONSTANT);
 		} 
+		//checks for <rparen>
+		recognize(Lexer.RPAREN);
 	}
 	
 	/**
@@ -300,7 +312,7 @@ public class Parser{
 	}
 	
 	/**
-		Function ciclo: verifies the production <ciclo> ::= while <comparacion> <points> {<statement>} <expr>
+		Function ciclo: verifies the production <ciclo> ::= while <comparacion> <points> {<statement>} <asignacion>
 	**/
 	public void ciclo()
 	{
@@ -313,11 +325,11 @@ public class Parser{
 		//checks for <statement>
 		statement();
 		//verifies if there are more <statement>
-		while ((lexer.getCurrentToken().code != Lexer.CONSTANT)&&(lexer.getCurrentToken().code != Lexer.VARIABLE)&&(statement())){
+		while ((lexer.getCurrentToken().code != Lexer.CONSTANT)&&(statement())){
 			statement();
 		}
-		//checks for <expr>
-		expr();
+		//checks for <asignacion>
+		asignacion();
 	}
 	
 		
