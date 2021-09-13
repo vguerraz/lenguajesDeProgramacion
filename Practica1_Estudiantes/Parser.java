@@ -128,7 +128,7 @@ public class Parser{
 	}
 	
 	/**
-		Function asignacion: verifies the production <asignacion> ::=<variable><assign>(<constant>|<expr>) 
+		Function asignacion: verifies the production <asignacion> ::=<variable><assign>(<constant>|<variable>|<expr>) 
 	**/
 	public void asignacion(){
 		recognize(Lexer.VARIABLE);
@@ -136,6 +136,9 @@ public class Parser{
 		//checks for read <constant>
 		if (lexer.getCurrentToken().code == Lexer.CONSTANT){
 			recognize(Lexer.CONSTANT);
+		} //checks for print <variable>
+		else if (lexer.getCurrentToken().code == Lexer.VARIABLE){
+			recognize(Lexer.VARIABLE);
 		} //checks for print <expr>
 		else {
 			expr();
@@ -194,7 +197,7 @@ public class Parser{
 	}
 
 	/**
-		Function statement: verifies the production <statement>::= read <variable> | print <variable> | <asignacion> | call<variable><lparen>[<argumentList>]<rparen> | <condicional> | <ciclo>
+		Function statement: verifies the production <statement>::= read <variable> | print <variable> | <asignacion> | call<variable><lparen>[<argumentList>]<rparen> | <condicional> | <ciclo> | <varDef>
 	**/
 	public boolean statement(){
 		boolean r = false;
@@ -211,7 +214,7 @@ public class Parser{
 			System.out.println("Print ok!");
 			r=true;
 		} //checks for <asignacion>
-		else if ((lexer.getCurrentToken().code == Lexer.VARIABLE){
+		else if ((lexer.getCurrentToken().code == Lexer.VARIABLE)){
 			asignacion();
 			System.out.println("Asignacion ok!");
 			r=true;
@@ -239,6 +242,11 @@ public class Parser{
 		else if (lexer.getCurrentToken().code == Lexer.WHILE){
 			ciclo();
 			System.out.println("While ok!");
+			r=true;
+		}//checks for <varDef>
+		else if (lexer.getCurrentToken().code == Lexer.INT){
+			varDef();
+			System.out.println("VarDef ok!");
 			r=true;
 		}
 		return r;
@@ -295,14 +303,12 @@ public class Parser{
 	}
 	
 	/**
-		Function elseStatement: verifies the production <elseStatement> ::= else <points> {<statement>}
+		Function elseStatement: verifies the production <elseStatement> ::= else {<statement>}
 	**/
 	public void elseStatement()
 	{
 		//checks for else
 		recognize(Lexer.ELSE);
-		//checks for <points>
-		recognize(Lexer.POINTS);
 		//checks for <statement>
 		statement();
 		//verifies if there are more <statement>
@@ -312,7 +318,7 @@ public class Parser{
 	}
 	
 	/**
-		Function ciclo: verifies the production <ciclo> ::= while <comparacion> <points> {<statement>} <asignacion>
+		Function ciclo: verifies the production <ciclo> ::= while <comparacion> {<statement>} <asignacion>
 	**/
 	public void ciclo()
 	{
@@ -320,8 +326,6 @@ public class Parser{
 		recognize(Lexer.WHILE);
 		//checks for <comparacion>
 		comparacion();
-		//checks for <points>
-		recognize(Lexer.POINTS);
 		//checks for <statement>
 		statement();
 		//verifies if there are more <statement>
@@ -362,8 +366,9 @@ public class Parser{
 	public static void main(String args[])
 	{
 		try {
-			String fileName = args[0];
-			Parser parser = new Parser(fileName);
+			Scanner scan = new Scanner(System.in);
+			String archivo = scan.next();
+			Parser parser = new Parser(archivo);
 				} catch (Exception e)
 		{
 			e.printStackTrace();
