@@ -128,21 +128,23 @@ public class Parser{
 	}
 	
 	/**
-		Function asignacion: verifies the production <asignacion> ::=<variable><assign>(<constant>|<variable>|<expr>) 
+		Function asignacion: verifies the production <asignacion> ::=<variable><assign>((<expr>)|<constant>|<variable>) 
 	**/
 	public void asignacion(){
 		recognize(Lexer.VARIABLE);
 		recognize(Lexer.ASSIGN);
-		//checks for read <constant>
-		if (lexer.getCurrentToken().code == Lexer.CONSTANT){
+		//checks for read <expr>
+		if (lexer.getCurrentToken().code == Lexer.LPAREN){
+			recognize(Lexer.LPAREN);
+			expr();
+			recognize(Lexer.RPAREN);
+		}//checks for <constant>
+		else if (lexer.getCurrentToken().code == Lexer.CONSTANT){
 			recognize(Lexer.CONSTANT);
 		} //checks for print <variable>
 		else if (lexer.getCurrentToken().code == Lexer.VARIABLE){
 			recognize(Lexer.VARIABLE);
-		} //checks for print <expr>
-		else {
-			expr();
-		}
+		} 
 	}
 	
 	/**
@@ -151,8 +153,10 @@ public class Parser{
 	public void expr(){
 		//checks for <term>
 		term();
-		recognize(Lexer.SUMA);
-		term();
+		if (lexer.getCurrentToken().code == Lexer.SUMA){
+			recognize(Lexer.SUMA);
+			term();
+		}
 	}
 	
 	/**
@@ -161,8 +165,10 @@ public class Parser{
 	public void term(){
 		//checks for <factor>
 		factor();
-		recognize(Lexer.MULTIPLICACION);
-		factor();
+		if (lexer.getCurrentToken().code == Lexer.MULTIPLICACION){
+			recognize(Lexer.MULTIPLICACION);
+			factor();
+		}
 	}
 	
 	/**
@@ -332,8 +338,6 @@ public class Parser{
 		while ((lexer.getCurrentToken().code != Lexer.CONSTANT)&&(statement())){
 			statement();
 		}
-		//checks for <asignacion>
-		asignacion();
 	}
 	
 		
