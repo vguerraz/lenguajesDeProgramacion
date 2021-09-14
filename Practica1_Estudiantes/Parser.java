@@ -36,10 +36,6 @@ public class Parser{
         @param expected: (int) expected token code
     **/
     private void recognize(int expected){
-	    //Defines the recognize of a constant
-	    if(expected == Lexer.CONSTANT){
-		    token.code = Lexer.CONSTANT;
-	    }
 	    if (token.code == expected)
 		    //the token is the expected one, move the tokenIterator
 		    token = lexer.nextToken();
