@@ -27,6 +27,7 @@ public class Lexer{
     public static final int PRINT = 16;
     public static final int CALL = 17;
     public static final int WHILE = 18;
+    public static final int ENDWHILE = 19;
     public static final int DIFERENTE = 20;
     public static final int SUMA = 21;
     public static final int MULTIPLICACION = 22;
@@ -82,6 +83,7 @@ public class Lexer{
         keywordsTable.add(new Token(PRINT, "print", 0));
         keywordsTable.add(new Token(CALL, "call", 0));
         keywordsTable.add(new Token(WHILE, "while", 0));
+        keywordsTable.add(new Token(ENDWHILE, "endwhile", 0));
         keywordsTable.add(new Token(DIFERENTE, "!=", 0));
         keywordsTable.add(new Token(SUMA, "+", 0));
         keywordsTable.add(new Token(MULTIPLICACION, "*", 0));
