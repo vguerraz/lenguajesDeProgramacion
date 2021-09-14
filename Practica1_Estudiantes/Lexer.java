@@ -175,29 +175,6 @@ public class Lexer{
     Function getTokenCode: Search for the token code in the keywordsTable
     @param tokenText: (String) actual token text found in the source file
      **/
-    public int getTokenCode(String tokenText)
-    {
-        //Create an iterator to traverse the keywordTable
-        Iterator<Token> it = keywordsTable.iterator();
-        Token tmpToken;
-        //The token text has not been found
-        int tokenCode = -1;
-        //While the iterator can move forward and the token has not been found
-        while ((it.hasNext()) && (tokenCode==-1)){
-            //move the iterator to the next row in the keywordTable
-            tmpToken = it.next();
-            //Verify if the actual token text is equals to the iterator point
-            if (tmpToken.text.compareTo(tokenText)==0)
-                tokenCode = tmpToken.code;
-        }
-
-        //If the token was not found, it is a variable
-        if (tokenCode ==-1)
-            tokenCode = VARIABLE;
-
-        //Return the actual token code
-        return tokenCode;
-    }
     public int getTokenCode(String tokenText){
         //Create an iterator to traverse the keywordTable
         Iterator<Token> it = keywordsTable.iterator();
