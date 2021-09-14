@@ -314,7 +314,7 @@ public class Parser{
     }
     
     /**
-        Function ciclo: verifies the production <ciclo> ::= while <comparacion> {<statement>}
+        Function ciclo: verifies the production <ciclo> ::= while <comparacion> {<statement>} endwhile 
     **/
     public void ciclo()
     {
@@ -325,9 +325,10 @@ public class Parser{
         //checks for <statement>
         statement();
         //verifies if there are more <statement>
-        while ((lexer.getCurrentToken().code != Lexer.CONSTANT)&&(statement())){
+        while ((lexer.getCurrentToken().code != Lexer.ENDWHILE)&&(statement())){
             statement();
         }
+	recognize(Lexer.ENDWHILE);
     }
        
     /**
