@@ -198,4 +198,73 @@ public class Lexer{
         //Return the actual token code
         return tokenCode;
     }
+    public int getTokenCode(String tokenText){
+        //Create an iterator to traverse the keywordTable
+        Iterator<Token> it = keywordsTable.iterator();
+        Token tmpToken;
+        //The token text has not been found
+        int tokenCode = -1;
+        //While the iterator can move forward and the token has not been found
+        while ((it.hasNext()) && (tokenCode==-1)){
+            //move the iterator to the next row in the keywordTable
+            tmpToken = it.next();
+            //Verify if the actual token text is equals to the iterator point
+            if (tmpToken.text.compareTo(tokenText)==0)
+                tokenCode = tmpToken.code;
+        }
+        
+        //If the token was not found, it is a variable
+        if (tokenCode ==-1) {
+            String number;
+            int acum;
+            number = tokenText;
+            acum = 0;
+            int i = 0;
+            while (i < number.length()){
+                switch (number.charAt(i)){
+                    case '1':
+                        acum = acum + 1;
+                        break;
+                    case '2':
+                        acum = acum + 1;
+                        break;
+                    case '3':
+                        acum = acum + 1;
+                        break;
+                    case '4':
+                        acum = acum + 1;
+                        break;
+                    case '5':
+                        acum = acum + 1;
+                        break;
+                    case '6':
+                        acum = acum + 1;
+                        break;
+                    case '7':
+                        acum = acum + 1;
+                        break;
+                    case '8':
+                        acum = acum + 1;
+                        break;
+                    case '9':
+                        acum = acum + 1;
+                        break;
+                    case '0':
+                        acum = acum + 1;
+                        break;
+                    default:
+                        break;
+                }
+                i++;
+            }
+            if(acum == number.length()){
+                tokenCode = CONSTANT;
+            }else{
+                tokenCode = VARIABLE;
+            }
+        }
+        
+        //Return the actual token code
+        return tokenCode;
+    }
 }
