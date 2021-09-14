@@ -290,7 +290,9 @@ public class Parser{
         }//checks for <diferente>
         else if (lexer.getCurrentToken().code == Lexer.DIFERENTE){
             recognize(Lexer.DIFERENTE);
-        }//checks for <variable>|<constant>
+        }else{
+		recognize(Lexer.EQUALS);
+	}//checks for <variable>|<constant>
         recognizeVariableConstant();
         //checks for <rparen>
         recognize(Lexer.RPAREN);
