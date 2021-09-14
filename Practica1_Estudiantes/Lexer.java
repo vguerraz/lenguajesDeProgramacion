@@ -1,17 +1,13 @@
 /** Programming Languajes
 By: Carmen Carvajal
 Lexer class: This class generates an arraylist containing every token in the source code
-
  **/
-
 
 import java.util.*;
 import java.lang.*;
 import java.io.*;
 
-
 public class Lexer{
-
     //Define token codes based on the grammar
     public static final int PROGRAM = 1;
     public static final int ENDPROGRAM = 2;
@@ -37,10 +33,8 @@ public class Lexer{
     public static final int INVALIDTOKEN=98;
     public static final int EOF = 99;
 
-
     //fileScanner: (Scanner) to iterate over the source file
     private Scanner fileScanner;
-
     //lineScanner: (Scanner) to iterate over each line in the source file
     private Scanner lineScanner;
     //keywordsTable: (ArrayList) stores the language keywords and symbols (e.g., print, read, program, etc...)
@@ -53,14 +47,13 @@ public class Lexer{
     private Token currentToken;
     //lineCount: (int) count line in the each source file
     private int lineCount;
-
-
+    
     /**
     Constructor:
     Initialize the keywordsTable
     recognize and store each token in the source file
     initialize the token iterator
-
+    
     @param fileName: source file path
      **/
     public Lexer (String fileName) throws FileNotFoundException {
@@ -111,7 +104,6 @@ public class Lexer{
             tokenList.add(new Token(tokenCode, tokenText, lineCount));
         }
         while(tokenText.compareTo("EOF")!=0);
-
 
         //Initialize the token iterator pointing to before the first element in the list
         tokenIterator = tokenList.listIterator();
