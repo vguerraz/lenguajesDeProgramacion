@@ -128,7 +128,7 @@ public class Parser{
     }
     
     /**
-        Function asignacion: verifies the production <asignacion> ::= <variable> <assign> ((<expr>)|<constant>|<variable>) 
+        Function asignacion: verifies the production <asignacion> ::= <variable> <assign> (<expr>|<constant>|<variable>) 
     **/
     public void asignacion(){
 	//checks for <variable>
@@ -139,7 +139,6 @@ public class Parser{
         if (lexer.getCurrentToken().code == Lexer.LPAREN){
             recognize(Lexer.LPAREN);
             expr();
-            recognize(Lexer.RPAREN);
         }//checks for <constant>|<variable>
         else{
             recognizeVariableConstant();
@@ -147,9 +146,11 @@ public class Parser{
     }
     
     /**
-        Function expr: verifies the production <expr> ::= <term> {+ <term>} 
+        Function expr: verifies the production <expr> ::= <lparen> <term> {+ <term>} <rparen>
     **/
     public void expr(){
+	//checks for <lparen>
+	recognize(Lexer.LPAREN);
         //checks for <term>
         term();
 	//checks for {+ <term>}
@@ -157,6 +158,8 @@ public class Parser{
             recognize(Lexer.SUMA);
             term();
         }
+	//checks for <rparen>
+	recognize(Lexer.RPAREN);
     }
     
     /**
@@ -172,14 +175,13 @@ public class Parser{
     }
     
     /**
-        Function factor: verifies the production <factor> ::= (<expr>) | variable | constant 
+        Function factor: verifies the production <factor> ::= <expr> | variable | constant 
     **/
     public void factor(){
 	//checks for <expr>
         if (lexer.getCurrentToken().code == Lexer.LPAREN){
             recognize(Lexer.LPAREN);
             expr();
-            recognize(Lexer.RPAREN);
         }//checks for variable | constant
         else{
             recognizeVariableConstant();  
