@@ -142,7 +142,7 @@ public class Parser{
             recognize(Lexer.RPAREN);
         }//checks for <constant>|<variable>
         else{
-            recognizeVariableConstante();
+            recognizeVariableConstant();
         } 
     }
     
@@ -182,7 +182,7 @@ public class Parser{
             recognize(Lexer.RPAREN);
         }//checks for variable | constant
         else{
-            recognizeVariableConstante();  
+            recognizeVariableConstant();  
         }
     }
     
@@ -293,7 +293,7 @@ public class Parser{
         else if (lexer.getCurrentToken().code == Lexer.DIFERENTE){
             recognize(Lexer.DIFERENTE);
         }//checks for <variable>|<constant>
-        recognizeVariableConstante();
+        recognizeVariableConstant();
         //checks for <rparen>
         recognize(Lexer.RPAREN);
     }
@@ -345,7 +345,7 @@ public class Parser{
         Function argumentDef: verifies the production <argumentDef> ::= <variable>
     **/
     public void argumentDef(){
-        recognizeVariableConstante();
+        recognizeVariableConstant();
     }
     
     /**
